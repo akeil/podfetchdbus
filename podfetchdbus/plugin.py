@@ -20,6 +20,7 @@ LOG = logging.getLogger(__name__)
 _IFACE = 'de.akeil.Podfetch'
 _OBJECT_PATH = '/de/akeil/Podfetch'
 
+_service = None
 _mainloop = None
 
 
@@ -34,8 +35,8 @@ def start(app, options):
         replace_existing=True,
     )
 
-    # export our service
-    service = _DBusPodfetch(bus, _OBJECT_PATH, app)
+    global _service
+    _service = _DBusPodfetch(bus, _OBJECT_PATH, app)
 
     global _mainloop
     _mainloop = GLib.MainLoop()
@@ -43,23 +44,33 @@ def start(app, options):
 
 
 def stop():
+    global _service
+    _service = None
     _mainloop.quit()
 
 
 def on_updates_complete(app, *args):
-    pass
+    # args should be empty
+    if _service:
+        _service.UpdatesComplete()
 
 
-def on_subscription_updated(app, *args):
-    pass
+def on_subscription_updated(app, name, *args):
+    # app, name, content_dir
+    if _service:
+        _service.SubscriptionUpdated(name)
 
 
-def on_subscription_added(app, *args):
-    pass
+def on_subscription_added(app, name, *args):
+    # app, name, content_dir
+    if _service:
+        _service.SubscriptionAdded(name)
 
 
-def on_subscription_removed(app, *args):
-    pass
+def on_subscription_removed(app, name, *args):
+    # app, name, content_dir
+    if _service:
+        _service.SubscriptionRemoved(name)
 
 
 class NotFoundException(dbus.DBusException):
@@ -158,3 +169,21 @@ class _DBusPodfetch(dbus.service.Object):
             tuple(e.pubdate[0:6]) if e.pubdate else (0, 0, 0, 0, 0, 0),
             e.files or []
         ) for e in episodes]
+
+    # Signals -----------------------------------------------------------------
+
+    @dbus.service.signal(_IFACE)
+    def UpdatesComplete(self):
+        pass
+
+    @dbus.service.signal(_IFACE)
+    def SubscriptionUpdated(self, name):
+        pass
+
+    @dbus.service.signal(_IFACE)
+    def SubscriptionAdded(self, name):
+        pass
+
+    @dbus.service.signal(_IFACE)
+    def SubscriptionRemoved(self, name):
+        pass
