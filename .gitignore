@@ -1,0 +1,48 @@
+*.py[cod]
+
+# C extensions
+*.so
+
+# Packages
+*.egg
+*.egg-info
+.eggs/*
+dist
+build
+eggs
+parts
+bin
+var
+sdist
+develop-eggs
+.installed.cfg
+lib
+lib64
+
+# Installer logs
+pip-log.txt
+
+# Unit test / coverage reports
+.coverage
+*.py,cover
+.tox
+.cache
+nosetests.xml
+
+# Translations
+*.mo
+
+# personal dev files
+tools
+todo
+*.bak
+
+
+# Sphinx
+docs/_build
+
+# packaging and shipping
+package/*
+
+# Glade autosaves
+data/ui/#*.ui#
