@@ -52,12 +52,12 @@ setup(
     license="BSD",
     zip_safe=True,
     entry_points={
-        #'podfetch.events': [
-        #    'subscription_updated = podfetchdbus:on_subscription_updated',
-        #    'updates_complete = podfetchdbus:on_updates_complete',
-        #    'subscription_added = podfetchdbus:on_subscription_added',
-        #    'subscription_removed = podfetchdbus:on_subscription_removed',
-        #],
+        'podfetch.events': [
+            'subscription_updated = podfetchdbus:on_subscription_updated',
+            'updates_complete = podfetchdbus:on_updates_complete',
+            'subscription_added = podfetchdbus:on_subscription_added',
+            'subscription_removed = podfetchdbus:on_subscription_removed',
+        ],
         'podfetch.service': [
             'start = podfetchdbus:start',
             'stop = podfetchdbus:stop',

@@ -46,6 +46,22 @@ def stop():
     _mainloop.quit()
 
 
+def on_updates_complete(app, *args):
+    pass
+
+
+def on_subscription_updated(app, *args):
+    pass
+
+
+def on_subscription_added(app, *args):
+    pass
+
+
+def on_subscription_removed(app, *args):
+    pass
+
+
 class NotFoundException(dbus.DBusException):
     _dbus_error_name = 'de.akeil.Podfetch.NotFoundException'
 
