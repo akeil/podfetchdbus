@@ -1,0 +1,45 @@
+<node name="/de/akeil/Podfetch">
+  <interface name="de.akeil.Podfetch">
+    <signal name="UpdatesComplete">
+      <!-- no args -->
+    </signal>
+    <signal name="SubscriptionUpdated">
+      <arg type="s" name="subscriptionName" />
+    </signal>
+    <signal name="SubscriptionAdded">
+      <arg type="s" name="subscriptionName" />
+    </signal>
+    <signal name="SubscriptionRemoved">
+      <arg type="s" name="subscriptionName" />
+    </signal>
+    <method name="Update">
+      <!-- no args -->
+    </method>
+    <method name="UpdateOne">
+      <arg direction="in" type="s" name="subscriptionName" />
+    </method>
+    <method name="ShowSubscription">
+      <arg direction="out" type="a{ss}" />
+      <arg direction="in" type="s" name="subscriptionName" />
+    </method>
+    <method name="AddSubscription">
+      <arg direction="out" type="a{ss}" />
+      <arg direction="in" type="s" name="url" />
+      <arg direction="in" type="s" name="subscriptionName" />
+    </method>
+    <method name="RemoveSubscription">
+      <arg direction="in" type="s" name="subscriptionName" />
+      <arg direction="in" type="b" name="deleteContent" />
+    </method>
+    <method name="EnableSubscription">
+      <arg direction="in" type="s" name="subscriptionName" />
+    </method>
+    <method name="DisableSubscription">
+      <arg direction="in" type="s" name="subscriptionName" />
+    </method>
+    <method name="Episodes">
+      <arg direction="out" type="a(sss(iiiiii)a(sss))" />
+      <arg direction="in" type="i" name="limit" />
+    </method>
+  </interface>
+</node>

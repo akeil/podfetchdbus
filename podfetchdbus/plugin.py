@@ -19,6 +19,7 @@ LOG = logging.getLogger(__name__)
 
 _IFACE = 'de.akeil.Podfetch'
 _OBJECT_PATH = '/de/akeil/Podfetch'
+_BUS_NAME = 'de.akeil.PodfetchService'
 
 _service = None
 _mainloop = None
@@ -30,7 +31,7 @@ def start(app, options):
     bus = dbus.SessionBus()
     # this makes us visible under de.akeil.PodfetchService
     # NOTE: only works, if we assign it to a variable (???)
-    _ = dbus.service.BusName('de.akeil.PodfetchService', bus,
+    _ = dbus.service.BusName(_BUS_NAME, bus,
         allow_replacement=True,
         replace_existing=True,
     )
