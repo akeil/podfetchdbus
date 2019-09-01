@@ -18,6 +18,10 @@
     <method name="UpdateOne">
       <arg direction="in" type="s" name="subscriptionName" />
     </method>
+    <method name="Play">
+      <arg direction="in" type="s" name="subscriptionName" />
+      <arg direction="in" type="s" name="episodeId" />
+    </method>
     <method name="ShowSubscription">
       <arg direction="out" type="a{ss}" />
       <arg direction="in" type="s" name="subscriptionName" />
