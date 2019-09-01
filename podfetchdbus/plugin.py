@@ -11,7 +11,9 @@ from dbus import service
 from dbus.mainloop.glib import DBusGMainLoop
 from gi.repository import GLib
 
+from podfetch.exceptions import NoEpisodeError
 from podfetch.exceptions import NoSubscriptionError
+from podfetch.player import Player
 from podfetch.predicate import NameFilter
 
 
@@ -37,7 +39,7 @@ def start(app, options):
     )
 
     global _service
-    _service = _DBusPodfetch(bus, _OBJECT_PATH, app)
+    _service = _DBusPodfetch(bus, _OBJECT_PATH, app, options)
 
     global _mainloop
     _mainloop = GLib.MainLoop()
@@ -84,9 +86,10 @@ class InvalidArgumentException(dbus.DBusException):
 
 class _DBusPodfetch(dbus.service.Object):
 
-    def __init__(self, bus, path, podfetch):
+    def __init__(self, bus, path, podfetch, options):
         super().__init__(bus, path)
         self._podfetch = podfetch
+        self._player = Player(self._podfetch, options)
 
     @dbus.service.method(_IFACE)
     def Update(self):
@@ -170,6 +173,17 @@ class _DBusPodfetch(dbus.service.Object):
             tuple(e.pubdate[0:6]) if e.pubdate else (0, 0, 0, 0, 0, 0),
             e.files or []
         ) for e in episodes]
+
+    @dbus.service.method(_IFACE, in_signature='ss')
+    def Play(self, subscription_name, episode_id):
+        LOG.debug('Play %s - %s', subscription_name, episode_id)
+        try:
+            sub = self._podfetch.subscription_for_name(subscription_name)
+            episode = sub.episode_for_id(episode_id)
+        except (NoSubscriptionError, NoEpisodeError):
+            raise NotFoundException
+
+        self._player.play(episode)
 
     # Signals -----------------------------------------------------------------
 
